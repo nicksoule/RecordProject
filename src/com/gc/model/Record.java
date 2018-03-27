@@ -1,5 +1,12 @@
 package com.gc.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Record")
 public class Record {
 
 	private int id;
@@ -23,6 +30,8 @@ public class Record {
 		this.image = image;
 	}
 
+	@Id
+	@Column(name = "id")
 	public int getId() {
 		return id;
 	}
@@ -31,6 +40,7 @@ public class Record {
 		this.id = id;
 	}
 
+	@Column(name = "title")
 	public String getTitle() {
 		return title;
 	}
@@ -39,6 +49,7 @@ public class Record {
 		this.title = title;
 	}
 
+	@Column(name = "price")
 	public String getPrice() {
 		return price;
 	}
@@ -47,6 +58,7 @@ public class Record {
 		this.price = price;
 	}
 
+	@Column(name = "date")
 	public String getDate() {
 		return date;
 	}
@@ -55,6 +67,7 @@ public class Record {
 		this.date = date;
 	}
 
+	@Column(name = "body")
 	public String getBody() {
 		return body;
 	}
@@ -63,6 +76,7 @@ public class Record {
 		this.body = body;
 	}
 
+	@Column(name = "image")
 	public String getImage() {
 		return image;
 	}
@@ -70,9 +84,5 @@ public class Record {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
-	
-	
-	
 	
 }
