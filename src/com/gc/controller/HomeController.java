@@ -1,7 +1,16 @@
 package com.gc.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +28,39 @@ import com.gc.model.Person;
 @Controller
 
 public class HomeController {
-	
-	@RequestMapping("/index")
+
+	@RequestMapping("/")
 	public String homePage() {
 		return "index";
 	}
 
 	@RequestMapping("/update")
 	public String registerForm(Model model) {
+		String pageNum = "0";
+		int i = 1;
+
+		try {
+			HttpClient http = HttpClientBuilder.create().build();
+			HttpHost host = new HttpHost("svcs.ebay.com", 80, "http");
+			HttpGet getPage = new HttpGet("/services/search/FindingService/v1?OPERATION-NAME="
+					+ "findCompletedItems&SERVICE-VERSION=1.7.0&SECURITY-APPNAME=Nicholas-recordpr-"
+					+ "PRD-a786e1828-322b5a10&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=176985&itemFilter(0)."
+					+ "name=SoldItemsOnly&itemFilter(0).value=true&itemFilter(1).name=MinPrice&itemFilter(1)."
+					+ "value=15.00&paginationInput.pageNumber=" + i);
+			HttpResponse resp = http.execute(host, getPage);
+			String jsonString = EntityUtils.toString(resp.getEntity());
+			JSONObject json = new JSONObject(jsonString);
+			pageNum = json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("paginationOutput").getJSONObject(0).getJSONArray("totalPages").get(0).toString();
+			model.addAttribute("page", pageNum);
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return "index";
 	}
 
