@@ -10,11 +10,8 @@
 <body>
 	<br>
 	<div style="text-align:center">
-		<h2>
-			Hello World!<br> <br>
-		</h2>
 		<h3>
-			<a href="welcome">Registration</a>
+			<a href="update">Update</a>
 			
 		</h3>
 	</div>

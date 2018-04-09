@@ -19,13 +19,15 @@ import com.gc.model.Person;
 @Controller
 
 public class HomeController {
+	
+	@RequestMapping("/index")
+	public String homePage() {
+		return "index";
+	}
 
-	@RequestMapping("/welcome")
+	@RequestMapping("/update")
 	public String registerForm(Model model) {
-		model.addAttribute("caraTest", "testing this out");
-
-		// this page view has the form in it
-		return "register";
+		return "index";
 	}
 
 	@RequestMapping(value = "success", method = RequestMethod.POST)
