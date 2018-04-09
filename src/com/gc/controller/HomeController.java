@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gc.model.Person;
+import com.gc.util.APICredentials;
 
 /*
  * @author: Nicholas Soule, Andrew Calabro-Cavin
@@ -38,13 +39,14 @@ public class HomeController {
 	public String registerForm(Model model) {
 		String pageNum = "0";
 		int i = 1;
+		ArrayList<String> idArray = new ArrayList<String>();
 
+		
 		try {
 			HttpClient http = HttpClientBuilder.create().build();
 			HttpHost host = new HttpHost("svcs.ebay.com", 80, "http");
 			HttpGet getPage = new HttpGet("/services/search/FindingService/v1?OPERATION-NAME="
-					+ "findCompletedItems&SERVICE-VERSION=1.7.0&SECURITY-APPNAME=Nicholas-recordpr-"
-					+ "PRD-a786e1828-322b5a10&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=176985&itemFilter(0)."
+					+ "findCompletedItems&SERVICE-VERSION=1.7.0&SECURITY-APPNAME=" + APICredentials.EBAYAPI_KEY + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=176985&itemFilter(0)."
 					+ "name=SoldItemsOnly&itemFilter(0).value=true&itemFilter(1).name=MinPrice&itemFilter(1)."
 					+ "value=15.00&paginationInput.pageNumber=" + i);
 			HttpResponse resp = http.execute(host, getPage);
@@ -52,6 +54,20 @@ public class HomeController {
 			JSONObject json = new JSONObject(jsonString);
 			pageNum = json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("paginationOutput").getJSONObject(0).getJSONArray("totalPages").get(0).toString();
 			model.addAttribute("page", pageNum);
+			
+//			for (i; i < Integer.parseInt(pageNum); i++) {
+//				HttpClient http = HttpClientBuilder.create().build();
+//				HttpHost host = new HttpHost("svcs.ebay.com", 80, "http");
+//				HttpGet getPage = new HttpGet("/services/search/FindingService/v1?OPERATION-NAME="
+//						+ "findCompletedItems&SERVICE-VERSION=1.7.0&SECURITY-APPNAME=Nicholas-recordpr-"
+//						+ "PRD-a786e1828-322b5a10&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=176985&itemFilter(0)."
+//						+ "name=SoldItemsOnly&itemFilter(0).value=true&itemFilter(1).name=MinPrice&itemFilter(1)."
+//						+ "value=15.00&paginationInput.pageNumber=" + i);
+//				HttpResponse resp = http.execute(host, getPage);
+//				String jsonString = EntityUtils.toString(resp.getEntity());
+//				JSONObject json = new JSONObject(jsonString);
+//				
+//			}
 			
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
