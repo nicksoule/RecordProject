@@ -42,21 +42,26 @@ public class HomeController {
 		int i = 1;
 		ArrayList<String> idArray = new ArrayList<String>();
 
-		
 		try {
-			
+
 			JSONObject json = APIBuild.ebayAPI(i);
-			
-			pageNum = json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("paginationOutput").getJSONObject(0).getJSONArray("totalPages").get(0).toString();
+
+			pageNum = json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("paginationOutput")
+					.getJSONObject(0).getJSONArray("totalPages").get(0).toString();
 			model.addAttribute("page", pageNum);
-			
-			for (int j=1; j < Integer.parseInt(pageNum); j++) {
-				for (int k = 0; k < 100; k++) {
+
+			for (int j = 1; j < Integer.parseInt(pageNum); j++) {
 				JSONObject jsonID = APIBuild.ebayAPI(j);
-				idArray.add(json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("searchResult").getJSONObject(0).getJSONArray("item").getJSONObject(k).getJSONArray("itemId").get(0).toString());
+				int resultNum = Integer.parseInt(jsonID.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("searchResult").getJSONObject(0).get("@count").toString());
+				for (int k = 0; k < resultNum; k++) {
+					idArray.add(jsonID.getJSONArray("findCompletedItemsResponse").getJSONObject(0)
+							.getJSONArray("searchResult").getJSONObject(0).getJSONArray("item").getJSONObject(k)
+							.getJSONArray("itemId").get(0).toString());
 				}
 			}
-			
+
+			System.out.println(idArray);
+
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -19,7 +19,8 @@ public class APIBuild {
 		HttpGet getPage = new HttpGet("/services/search/FindingService/v1?OPERATION-NAME="
 				+ "findCompletedItems&SERVICE-VERSION=1.7.0&SECURITY-APPNAME=" + APICredentials.EBAYAPI_KEY + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=176985&itemFilter(0)."
 				+ "name=SoldItemsOnly&itemFilter(0).value=true&itemFilter(1).name=MinPrice&itemFilter(1)."
-				+ "value=15.00&paginationInput.pageNumber=" + pageNum);
+				+ "value=50.00&itemFilter(2).name=EndTimeFrom&itemFilter(2).value=2018-04-09T19:09:02.768Z&itemFilter(3)"
+				+ ".name=EndTimeTo$itemFilter(3).value=2018-04-10T19:09:02.768Z&paginationInput.pageNumber=" + pageNum);
 		HttpResponse resp = http.execute(host, getPage);
 		String jsonString = EntityUtils.toString(resp.getEntity());
 		JSONObject json = new JSONObject(jsonString);
