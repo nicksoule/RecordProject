@@ -52,7 +52,8 @@ public class HomeController {
 
 			for (int j = 1; j < Integer.parseInt(pageNum); j++) {
 				JSONObject jsonID = APIBuild.ebayAPI(j);
-				int resultNum = Integer.parseInt(jsonID.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("searchResult").getJSONObject(0).get("@count").toString());
+				int resultNum = Integer.parseInt(jsonID.getJSONArray("findCompletedItemsResponse").getJSONObject(0)
+						.getJSONArray("searchResult").getJSONObject(0).get("@count").toString());
 				for (int k = 0; k < resultNum; k++) {
 					idArray.add(jsonID.getJSONArray("findCompletedItemsResponse").getJSONObject(0)
 							.getJSONArray("searchResult").getJSONObject(0).getJSONArray("item").getJSONObject(k)
