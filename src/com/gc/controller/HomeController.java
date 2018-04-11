@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gc.model.Person;
+import com.gc.util.APIBuild;
 import com.gc.util.APICredentials;
 
 /*
@@ -43,31 +44,18 @@ public class HomeController {
 
 		
 		try {
-			HttpClient http = HttpClientBuilder.create().build();
-			HttpHost host = new HttpHost("svcs.ebay.com", 80, "http");
-			HttpGet getPage = new HttpGet("/services/search/FindingService/v1?OPERATION-NAME="
-					+ "findCompletedItems&SERVICE-VERSION=1.7.0&SECURITY-APPNAME=" + APICredentials.EBAYAPI_KEY + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=176985&itemFilter(0)."
-					+ "name=SoldItemsOnly&itemFilter(0).value=true&itemFilter(1).name=MinPrice&itemFilter(1)."
-					+ "value=15.00&paginationInput.pageNumber=" + i);
-			HttpResponse resp = http.execute(host, getPage);
-			String jsonString = EntityUtils.toString(resp.getEntity());
-			JSONObject json = new JSONObject(jsonString);
+			
+			JSONObject json = APIBuild.ebayAPI(i);
+			
 			pageNum = json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("paginationOutput").getJSONObject(0).getJSONArray("totalPages").get(0).toString();
 			model.addAttribute("page", pageNum);
 			
-//			for (i; i < Integer.parseInt(pageNum); i++) {
-//				HttpClient http = HttpClientBuilder.create().build();
-//				HttpHost host = new HttpHost("svcs.ebay.com", 80, "http");
-//				HttpGet getPage = new HttpGet("/services/search/FindingService/v1?OPERATION-NAME="
-//						+ "findCompletedItems&SERVICE-VERSION=1.7.0&SECURITY-APPNAME=Nicholas-recordpr-"
-//						+ "PRD-a786e1828-322b5a10&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&categoryId=176985&itemFilter(0)."
-//						+ "name=SoldItemsOnly&itemFilter(0).value=true&itemFilter(1).name=MinPrice&itemFilter(1)."
-//						+ "value=15.00&paginationInput.pageNumber=" + i);
-//				HttpResponse resp = http.execute(host, getPage);
-//				String jsonString = EntityUtils.toString(resp.getEntity());
-//				JSONObject json = new JSONObject(jsonString);
-//				
-//			}
+			for (int j=1; j < Integer.parseInt(pageNum); j++) {
+				for (int k = 0; k < 100; k++) {
+				JSONObject jsonID = APIBuild.ebayAPI(j);
+				idArray.add(json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("searchResult").getJSONObject(0).getJSONArray("item").getJSONObject(k).getJSONArray("itemId").get(0).toString());
+				}
+			}
 			
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
