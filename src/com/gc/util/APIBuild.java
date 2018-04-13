@@ -28,4 +28,16 @@ public class APIBuild {
 		JSONObject json = new JSONObject(jsonString);
 		return json;
 	}
+	
+	public static JSONObject getRecordInfo(String id) throws ClientProtocolException, IOException {
+		HttpClient http = HttpClientBuilder.create().build();
+		HttpHost host = new HttpHost("open.api.ebay.com", 80, "http");
+		HttpGet getPage = new HttpGet("shopping?callname=GetSingleItem&responseencoding=JSON&appid=" 
+				+ APICredentials.EBAYAPI_KEY + "&siteid=0&version=967&ItemID=" 
+				+ id + "IncludeSelector=Description");
+		HttpResponse resp = http.execute(host, getPage);
+		String jsonString = EntityUtils.toString(resp.getEntity());
+		JSONObject json = new JSONObject(jsonString);
+		return json;
+	}
 }

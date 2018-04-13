@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gc.model.Person;
+import com.gc.model.Record;
 import com.gc.util.APIBuild;
 import com.gc.util.APICredentials;
 
@@ -42,6 +43,7 @@ public class HomeController {
 		String pageNum = "0";
 		int i = 1;
 		ArrayList<String> idArray = new ArrayList<String>();
+		ArrayList<Record> recArray = new ArrayList<Record>();
 
 		try {
 
@@ -59,11 +61,42 @@ public class HomeController {
 					idArray.add(jsonID.getJSONArray("findCompletedItemsResponse").getJSONObject(0)
 							.getJSONArray("searchResult").getJSONObject(0).getJSONArray("item").getJSONObject(k)
 							.getJSONArray("itemId").get(0).toString());
+					
+//					for (int m = 0; m <= 0; m++) {
+//						JSONObject jRec = APIBuild.getRecordInfo(idArray.get(m));
+//						System.out.println(jRec.toString());
+//						Record rec = new Record();
+//						rec.setTitle(jRec.getJSONObject("Item").get("Title").toString());
+//						rec.setBody(jRec.getJSONObject("Item").get("Description").toString());
+//						rec.setDate(jRec.getJSONObject("Item").get("EndTime").toString());
+//
+//						rec.setPrice(jRec.getJSONObject("Item").getJSONObject("ConvertedCurrentPrice").get("Value").toString());
+//						rec.setImage(jRec.getJSONObject("Item").getJSONArray("PictureURL").get(0).toString());
+//						
+//						recArray.add(rec);
+//					}
 				}
 			}
 
 			System.out.println(idArray);
-			idArray.clear();
+//			System.out.println(idArray.get(0));
+			
+			for (int m = 0; m <= 3; m++) {
+				System.out.println(idArray.get(m));
+				JSONObject jRec = APIBuild.getRecordInfo(idArray.get(m).toString());
+				System.out.println(jRec.toString());
+				Record rec = new Record();
+				rec.setTitle(jRec.getJSONObject("Item").get("Title").toString());
+				rec.setBody(jRec.getJSONObject("Item").get("Description").toString());
+				rec.setDate(jRec.getJSONObject("Item").get("EndTime").toString());
+
+				rec.setPrice(jRec.getJSONObject("Item").getJSONObject("ConvertedCurrentPrice").get("Value").toString());
+				rec.setImage(jRec.getJSONObject("Item").getJSONArray("PictureURL").get(0).toString());
+				
+				recArray.add(rec);
+			}
+			
+			System.out.println(recArray.toString());
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
