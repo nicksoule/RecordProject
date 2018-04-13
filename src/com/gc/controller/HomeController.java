@@ -37,21 +37,22 @@ public class HomeController {
 	}
 
 	@RequestMapping("/update")
-	public String registerForm(Model model) {
+	public String registerForm(Model model, @RequestParam("month") String month, @RequestParam("day1") 
+	String day1, @RequestParam("day2") String day2, @RequestParam("year") String year) {
 		String pageNum = "0";
 		int i = 1;
 		ArrayList<String> idArray = new ArrayList<String>();
 
 		try {
 
-			JSONObject json = APIBuild.ebayAPI(i);
+			JSONObject json = APIBuild.ebayAPI(i, month, day1, day2, year);
 
 			pageNum = json.getJSONArray("findCompletedItemsResponse").getJSONObject(0).getJSONArray("paginationOutput")
 					.getJSONObject(0).getJSONArray("totalPages").get(0).toString();
 			model.addAttribute("page", pageNum);
 
 			for (int j = 1; j < Integer.parseInt(pageNum); j++) {
-				JSONObject jsonID = APIBuild.ebayAPI(j);
+				JSONObject jsonID = APIBuild.ebayAPI(j, month, day1, day2, year);
 				int resultNum = Integer.parseInt(jsonID.getJSONArray("findCompletedItemsResponse").getJSONObject(0)
 						.getJSONArray("searchResult").getJSONObject(0).get("@count").toString());
 				for (int k = 0; k < resultNum; k++) {

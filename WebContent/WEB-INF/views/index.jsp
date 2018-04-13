@@ -10,11 +10,18 @@
 <body>
 	<br>
 	<div style="text-align:center">
-		<h3>
-			<a href="update">Update</a>
+		<form action="update" method=POST>
+			<input type="text" name="month" placeholder="month" required><br>
+			<input type="text" name="day1" placeholder="start day" required><br>
+			<input type="text" name="day2" placeholder="end day" required><br>
+			<input type="text" name="year" placeholder="year" required><br>
+			<input type = "submit" value = "submit">
+			
+		</form>
+			
 			${page}
 			
-		</h3>
+		
 	</div>
 	
 	<script>
