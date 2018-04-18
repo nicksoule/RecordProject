@@ -34,7 +34,14 @@ import com.gc.util.APICredentials;
 public class HomeController {
 
 	@RequestMapping("/")
-	public String homePage() {
+	public ModelAndView homePage() {
+		RecordDaoImp dao = new RecordDaoImp();
+		ArrayList<Record> recArr = dao.getAllRecs();
+		return new ModelAndView("home", "recList", recArr);
+	}
+	
+	@RequestMapping("/admin")
+	public String adminPage() {
 		return "index";
 	}
 
