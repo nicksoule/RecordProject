@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.gc.dao.RecordDao;
+import com.gc.dao.RecordDaoImp;
 import com.gc.model.Record;
 import com.gc.util.APIBuild;
 import com.gc.util.APICredentials;
@@ -36,8 +39,8 @@ public class HomeController {
 	}
 
 	@RequestMapping("/update")
-	public String registerForm(Model model, @RequestParam("month") String month, @RequestParam("day1") 
-	String day1, @RequestParam("year") String year) {
+	public String registerForm(Model model, @RequestParam("month") String month, @RequestParam("day1") String day1,
+			@RequestParam("year") String year) {
 		String pageNum = "0";
 		int i = 1;
 		ArrayList<String> idArray = new ArrayList<String>();
@@ -63,8 +66,8 @@ public class HomeController {
 			}
 
 			System.out.println(idArray);
-			
-			for (int m = 0; m <= 3; m++) {
+
+			for (int m = 0; m <= idArray.size(); m++) {
 				System.out.println(idArray.get(m));
 				JSONObject jRec = APIBuild.getRecordInfo(idArray.get(m).toString());
 				System.out.println(jRec.toString());
@@ -72,14 +75,16 @@ public class HomeController {
 				rec.setTitle(jRec.getJSONObject("Item").get("Title").toString());
 				rec.setBody(jRec.getJSONObject("Item").get("Description").toString());
 				rec.setDate(jRec.getJSONObject("Item").get("EndTime").toString());
-
 				rec.setPrice(jRec.getJSONObject("Item").getJSONObject("ConvertedCurrentPrice").get("Value").toString());
 				rec.setImage(jRec.getJSONObject("Item").getJSONArray("PictureURL").get(0).toString());
-				
+
 				recArray.add(rec);
 			}
-			
+
 			System.out.println(recArray.toString());
+
+			RecordDaoImp dao = new RecordDaoImp();
+			dao.addRec(recArray);
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
