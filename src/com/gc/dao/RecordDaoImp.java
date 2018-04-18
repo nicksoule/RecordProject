@@ -39,11 +39,11 @@ public class RecordDaoImp implements RecordDao {
 	}
 
 	@Override
-	public void addRec(ArrayList<Record> recArr) {
+	public void addRec(Record rec) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(recArr);
+		session.save(rec);
 		tx.commit();
 		session.close();
 

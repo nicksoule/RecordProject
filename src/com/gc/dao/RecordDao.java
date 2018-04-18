@@ -8,6 +8,6 @@ public interface RecordDao {
 	
 	public ArrayList<Record> getAllRecs();
 	public Record getRec();
-	public void addRec(ArrayList<Record> recArr);
+	public void addRec(Record rec);
 
 }

@@ -67,7 +67,7 @@ public class HomeController {
 
 			System.out.println(idArray);
 
-			for (int m = 0; m <= idArray.size(); m++) {
+			for (int m = 0; m <= 3; m++) {
 				System.out.println(idArray.get(m));
 				JSONObject jRec = APIBuild.getRecordInfo(idArray.get(m).toString());
 				System.out.println(jRec.toString());
@@ -78,13 +78,11 @@ public class HomeController {
 				rec.setPrice(jRec.getJSONObject("Item").getJSONObject("ConvertedCurrentPrice").get("Value").toString());
 				rec.setImage(jRec.getJSONObject("Item").getJSONArray("PictureURL").get(0).toString());
 
-				recArray.add(rec);
+				RecordDaoImp dao = new RecordDaoImp();
+				dao.addRec(rec);
 			}
 
-			System.out.println(recArray.toString());
-
-			RecordDaoImp dao = new RecordDaoImp();
-			dao.addRec(recArray);
+			
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
