@@ -73,15 +73,18 @@ public class HomeController {
 				System.out.println(jRec.toString());
 				Record rec = new Record();
 				rec.setTitle(jRec.getJSONObject("Item").get("Title").toString());
-				rec.setBody(jRec.getJSONObject("Item").get("Description").toString());
+				String description = jRec.getJSONObject("Item").get("Description").toString();
+				if (description.length() > 5000) {
+					description = description.substring(0, 4999);
+				}
+				rec.setBody(description);
 				rec.setDate(jRec.getJSONObject("Item").get("EndTime").toString());
 				rec.setPrice(jRec.getJSONObject("Item").getJSONObject("ConvertedCurrentPrice").get("Value").toString());
 				rec.setImage(jRec.getJSONObject("Item").getJSONArray("PictureURL").get(0).toString());
 
 				RecordDaoImp dao = new RecordDaoImp();
 				dao.addRec(rec);
-			}
-
+			}	
 			
 
 		} catch (ClientProtocolException e) {
@@ -91,6 +94,9 @@ public class HomeController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
 		idArray.clear();
 		return "index";
 	}
