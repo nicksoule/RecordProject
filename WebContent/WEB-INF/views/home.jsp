@@ -8,6 +8,10 @@
 <title>Home</title>
 </head>
 <body>
+<form action="search">
+<input type="text" name="search" required>
+<input type="submit" value="submit">
+</form>
 <c:forEach var="myVar" items="${recList}">
 					<img src="${myVar.image}" height=200><br>
 					<p>${myVar.title}</p><br>

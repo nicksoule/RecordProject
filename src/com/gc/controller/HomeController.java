@@ -40,6 +40,11 @@ public class HomeController {
 		return new ModelAndView("home", "recList", recArr);
 	}
 	
+	@RequestMapping("/search")
+	public ModelAndView searchRes() {
+		return new ModelAndView("", "", "");
+	}
+	
 	@RequestMapping("/admin")
 	public String adminPage() {
 		return "index";
